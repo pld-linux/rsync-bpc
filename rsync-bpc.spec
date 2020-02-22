@@ -1,3 +1,6 @@
+# Conditional build:
+%bcond_with	tests	# perform "make test"
+#
 Summary:	A customized version of rsync that is used as part of BackupPC
 Name:		rsync-bpc
 Version:	3.1.2.1
@@ -9,7 +12,10 @@ Source0:	https://github.com/backuppc/rsync-bpc/releases/download/%{version}/%{na
 URL:		https://github.com/backuppc/rsync-bpc
 BuildRequires:	acl-devel
 BuildRequires:	attr-devel
+BuildRequires:	autoconf >= 2.59
+BuildRequires:	automake
 BuildRequires:	popt-devel
+BuildRequires:	rpmbuild(macros) >= 1.318
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -30,8 +36,20 @@ Rsync-bpc serves no purpose outside of BackupPC.
 %setup -q
 
 %build
-%configure
+cp -f /usr/share/automake/config.sub .
+%{__autoheader}
+%{__autoconf}
+%configure \
+	LIBS="-lcrypto" \
+	%{?with_rsh:--with-rsh=rsh} \
+	--enable-ipv6 \
+	--enable-acl-support \
+	--enable-xattr-support \
+	--disable-debug
+%{__make} proto
 %{__make}
+
+%{?with_tests:%{__make} test}
 
 %install
 rm -rf $RPM_BUILD_ROOT
