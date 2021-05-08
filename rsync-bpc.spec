@@ -3,12 +3,12 @@
 #
 Summary:	A customized version of rsync that is used as part of BackupPC
 Name:		rsync-bpc
-Version:	3.1.2.1
+Version:	3.1.3.0
 Release:	1
 License:	GPL v3+
 Group:		Networking/Utilities
 Source0:	https://github.com/backuppc/rsync-bpc/releases/download/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	7749b21b46db4e6a74120c8687a5944c
+# Source0-md5:	f5c2ee55dc1683c9737982e51a404026
 URL:		https://github.com/backuppc/rsync-bpc
 BuildRequires:	acl-devel
 BuildRequires:	attr-devel
